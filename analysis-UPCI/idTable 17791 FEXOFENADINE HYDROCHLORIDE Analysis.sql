@@ -8,3 +8,6 @@ JOIN umls.MRCONSO ON(AnnotationID = CUI)
 WHERE Article.SpecId = 'f4a41d2b-9f00-4768-b375-5749793e7de3' AND LAT = 'ENG' AND idTable = '17791';
 /* tables.html seems much more accurate in parsing out tables only related to PDDIs. When querying for tables 
 with this SpecID many tables showed up containing dosing information not pertinent to PDDIs */
+/* use WHERE statements to specify section names. Look for different ways to write section titles like
+"Drug Interactions"*/
+/* DISTINCT(ArtTable.section), look for strings like(drug interaction) this and find multiple different forms of this(in section)*/
