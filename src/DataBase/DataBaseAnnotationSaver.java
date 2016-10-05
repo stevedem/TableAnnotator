@@ -27,16 +27,15 @@ public class DataBaseAnnotationSaver {
 	
 	public DataBaseAnnotationSaver(){
 		 try {
-			 BufferedReader br = new BufferedReader(new FileReader(
-						"settings.cfg"));
-				// StringBuilder sb = new StringBuilder();
+			 BufferedReader br = new BufferedReader(new FileReader("settings.cfg"));
+			        // StringBuilder sb = new StringBuilder();
 				String line = br.readLine();
 				String host="";
 				String database_name= "";
 				String database_username = "";
 				String database_password = "";
 				String database_port = "";
-				while (line != null) {
+				while (line != null && line != "") {
 					KeyValue kv = new KeyValue();
 					String[] parts = line.split(";");
 					kv.key = parts[0];
@@ -82,7 +81,7 @@ public class DataBaseAnnotationSaver {
 	{
 		try {
 			Statement stmt = conn.createStatement();
-			String insertTableSQL = "INSERT INTO Article (PMCID,PMID,pissn,eissn,Title,Abstract,JournalName,JournalPublisherName,JournalPublisherLocation,Source,SpecId) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+			String insertTableSQL = "INSERT INTO Article (PMCID,PMID,pissn,eissn,Title,Abstract,JournalName,JournalPublisherName,JournalPublisherLocation,Source,SpecId,PlainText) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement preparedStatement = conn.prepareStatement(insertTableSQL,Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, art.getPmc());
 			preparedStatement.setString(2, art.getPmid());
@@ -95,6 +94,7 @@ public class DataBaseAnnotationSaver {
 			preparedStatement.setString(9, art.getPublisher_loc());
 			preparedStatement.setString(10, art.getSource());
 			preparedStatement.setString(11, art.getSpec_id());
+			preparedStatement.setString(12, art.getPlain_text());
 			// execute insert SQL stetement
 			int articleId = preparedStatement.executeUpdate();
 			ResultSet rs1 = preparedStatement.getGeneratedKeys();
@@ -280,7 +280,8 @@ public class DataBaseAnnotationSaver {
 	        	  		preparedStatement8.setInt(9,CellId);
 	        	  		preparedStatement8.setString(10,annot.get(l).getDescription());
 	        	  		preparedStatement8.setString(11,annot.get(l).getAgentVersion());// Should be version
-	        	  		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	        	  		//DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	        	  		Date date = new Date();
 	        	  		preparedStatement8.setString(12,dateFormat.format(date));
 	        	  		preparedStatement8.setString(13,annot.get(l).getLocation()); // Should be location

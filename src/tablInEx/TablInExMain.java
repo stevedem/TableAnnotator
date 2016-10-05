@@ -35,6 +35,10 @@ import readers.PMCXMLReader;
 import readers.Reader;
 import stats.Statistics;
 
+// Import log4j classes.
+import org.apache.log4j.Logger;
+import org.apache.log4j.BasicConfigurator;
+
 public class TablInExMain {
 
 	public static boolean databaseSave = false;
@@ -105,10 +109,11 @@ public class TablInExMain {
 
 	public static Article runReadingloopOneFile(Article a, File file, Class s) {
 		try {
-
+		    System.out.println("File: " + file.getPath());
+		    
 			File f = new File(file.getPath());
-			// Not working with hidden or temp files
-			if (f.isHidden() || file.getPath().endsWith("~"))
+			// Not working with hidde,  temp files, or zip
+			if (f.isHidden() || file.getPath().endsWith("~") || file.getPath().endsWith("zip"))
 				return a;
 
 			Reader r;
@@ -129,6 +134,9 @@ public class TablInExMain {
 	}
 
 	public static void main(String[] args) {
+    	        // Set up a simple configuration that logs on the console.
+	        BasicConfigurator.configure();
+	    
 		String propsFile = "file_properties.xml";
 		try {
 			JWNL.initialize(new FileInputStream(propsFile));
